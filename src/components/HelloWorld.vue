@@ -1,15 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
+import { supabase } from "../supabase";
 
 defineProps({
-  msg: String
-})
+  msg: String,
+});
 
-const count = ref(0)
+const count = ref(0);
+async function signOut() {
+  const { error } = await supabase.auth.signOut();
+}
 </script>
-
 <template>
-  <h1>Dev</h1>
+  <h1><button @click="signOut">Sign Out</button></h1>
   <h1>{{ msg }}</h1>
 
   <div class="card">
