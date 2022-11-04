@@ -39,6 +39,17 @@ export default function useAuthUser() {
     return user;
   };
 
+
+  const findUserLogin = async ()=>{
+
+    const userLogin =await supabase.auth.getUser();
+    console.log("TEST IS LOGIN USER")
+    console.log(userLogin)
+    if (error) throw error;
+    useUserStore().isLogin=true;
+    useUserStore().data = data.user;
+    return data.user;
+  }
   /**
    * Login with google, github, etc
    */
@@ -119,6 +130,7 @@ export default function useAuthUser() {
     update,
     sendPasswordRestEmail,
     maybeHandleEmailConfirmation,
-    loginWithGoogle
+    loginWithGoogle,
+    findUserLogin
   };
 }

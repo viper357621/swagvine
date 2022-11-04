@@ -1,12 +1,19 @@
 <script setup>
-import { ref } from "vue";
+import { ref ,onMounted } from "vue";
 import useAuthUser from "../composables/UseAuthUser";
 import { useRouter } from "vue-router";
 import { useUserStore } from '../store/useUserStore'
 // Use necessary composables
 const router = useRouter();
-const { login, loginWithSocialProvider,loginWithGoogle } = useAuthUser();
+const { login, loginWithSocialProvider,loginWithGoogle ,findUserLogin} = useAuthUser();
 const user = useUserStore();
+
+
+
+onMounted(() => {
+  console.log("LOG IN!!!!");
+  findUserLogin()
+})
 
 // keep up with form data
 const form = ref({
@@ -14,7 +21,7 @@ const form = ref({
   password: "",
 });
 // call the proper login method from the AuthUser composable
-// on the submit of the form
+// on the submit of the forms
 const handleLogin = async (provider) => {
   try {
     provider
@@ -39,14 +46,11 @@ const handleLoginGoogle = async (provider) => {
 </script>
 <template>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/fontawesome.min.css" integrity="sha512-RvQxwf+3zJuNwl4e0sZjQeX7kUa3o82bDETpgVCH2RiwYSZVDdFJ7N/woNigN/ldyOOoKw8584jM4plQdt8bhA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <body>
   <div class="fullscreen-container">
     <div class="login-container">
-      <h1 class="header">Login</h1>
       <form class="form" @submit.prevent="handleLogin()">
+        <h1>Login</h1>
         <div class="input-group">
           <label for="username">Email</label>
           <input  v-model="form.email" type="email" id="username" name="username" placeholder="Type your username">
