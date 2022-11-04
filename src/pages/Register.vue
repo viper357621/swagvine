@@ -41,7 +41,7 @@ const handleSubmit = async () => {
 <body>
   <div class="fullscreen-container">
     <div class="login-container">
-      <h1 class="header">Register</h1>
+      <h1 class="header">Join for Free</h1>
       <form class="form" @submit.prevent="handleSubmit()">
         <div class="input-group">
           <label for="username">Username</label>
