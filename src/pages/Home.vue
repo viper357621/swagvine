@@ -1,6 +1,8 @@
+
+
 <template>
  <header id="header" class="header">
-  <img src="https://res.cloudinary.com/alexandracaulea/image/upload/v1583497208/logo_i5t9wh.svg" class="logo" alt="Learn English" id="header-img" />
+  <img src="https://i.ibb.co/M8w4j87/swagvine-logo.png" height="50" class="logo" alt="Learn English" id="header-img" />
   <nav id="nav-bar" class="nav">
     <ul class="nav-list">
       <li class="nav-item">
@@ -10,10 +12,10 @@
         <a class="nav-link" href="#how-it-works">How It Works</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#get-started">Get Started</a>
+        <router-link to="/register" class="nav-link " >Get Started</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link nav-link-cta" href="#subscribe">Subscribe</a>
+        <router-link to="/register" class="nav-link nav-link-cta" >Login</router-link>
       </li>
     </ul>
   </nav>
@@ -28,8 +30,7 @@
       Start Earning in Swagvine
     </h1>
     <p class="intro__subtitle">
-      Visiting places in the world, getting a new job, or just looking for a way to practice your English - this is
-      the perfect place for you.
+      venenatis dapibus purus. Integer ullamcorper ex neque, et cursus mauris tempor dapibus. Cras ac convallis lectus, id ullamcorper ex.
     </p>
     <a href="#" class="button">Get Started</a>
     <img class="intro__illustration" src="https://res.cloudinary.com/alexandracaulea/image/upload/v1583497233/intro-illustration_qneuer.svg" alt="" />
@@ -41,24 +42,24 @@
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#headphones-icon"></use>
         </svg>
-        <p><strong>Engaging audio content</strong> on a wide range on topics.</p>
+        <p><strong>Lorem ipsum dolor sit amet</strong> netus et malesuada fames ac turpis egestas</p>
       </li>
       <li>
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#video-icon"></use>
         </svg>
-        <p><strong>400+ video lessons</strong> from professional teachers.</p>
+        <p><strong>rhoncus scelerisque est.</strong>elementum malesuada euismod</p>
       </li>
       <li>
         <svg width="116" height="116" viewBox="0 0 116 116" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <use xlink:href="#email-icon"></use>
         </svg>
-        <p><strong>Weekly tips and advice</strong> to help you improve your English level.</p>
+        <p><strong> Nam ultricies neque quam</strong> nec finibus neque sodales non</p>
       </li>
     </ul>
   </section>
   <section id="how-it-works" class="grow">
-    <h2 class="section__title grow__title">Grow Together</h2>
+    <h2 class="section__title grow__title">Advertisers pay</h2>
     <p>
       Start a meaningful conversation in our community platform, ask questions when you’re stuck and get help from a
       real person. Get answers fast, no matter your question.
@@ -73,7 +74,7 @@
   <div class="arrow-1"></div>
   <section class="get-feedback">
     <h2 class="section__title get-feedback__title">
-      Get quality feedback
+      We recruit members like you
     </h2>
     <p>
       We are here for you. Participate in the weekly live events, get the tools and resources you need, and find
@@ -86,7 +87,7 @@
   <div class="arrow-2"></div>
   <section class="learning">
     <h2 class="section__title learning__title">
-      Start learning immediately
+      You do online activities:
     </h2>
     <p>
       It takes no time to start learning with us, This means, once you sign up for an account, you can start
@@ -116,9 +117,8 @@
   </div>
   <section class="start-learning">
     <h2 class="section__title">
-      Ready To Start Learning English?
-    </h2>
-    <a href="#" class="button">Get Started</a>
+      Start Earning To Day
+    </h2><router-link to="/register" class="button">Get Started</router-link>
     <div class="video-learning">
       <video muted id="video" class="video" poster="https://res.cloudinary.com/alexandracaulea/image/upload/v1583497256/video-poster_lkwsdg.jpg">
         <source src="https://res.cloudinary.com/alexandracaulea/video/upload/v1583497287/video-learning_vpohou.mp4" type="video/mp4" />
