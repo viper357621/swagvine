@@ -15,12 +15,20 @@ export default function useAuthUser() {
   const login = async ({ email, password }) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    console.log(data.user);
     useUserStore().isLogin=true;
     useUserStore().data = data.user;
     return data.user;
   };
 
+    const loginWithGoogle = async()=>{
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) throw error;
+      useUserStore().isLogin=true;
+      useUserStore().data = data.user;
+      return data.user;
+    }
   /**
    * Login with refresh token
    * Useful for logging in after email confirmations
@@ -111,5 +119,6 @@ export default function useAuthUser() {
     update,
     sendPasswordRestEmail,
     maybeHandleEmailConfirmation,
+    loginWithGoogle
   };
 }
