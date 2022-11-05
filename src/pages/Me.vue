@@ -25,7 +25,9 @@ const user = useUserStore();
       <nav id="sidebar">
         <div class="sidebar-header">
           <h3>
-            <img src="img/logo.png" class="img-fluid" /><span>Swagvine</span>
+            <img src="https://i.ibb.co/M8w4j87/swagvine-logo.png" style=" min-width: 170px;
+  min-height: 50px;" class="logo" alt="Learn English" id="header-img" />
+ 
           </h3>
         </div>
         <ul class="list-unstyled components">

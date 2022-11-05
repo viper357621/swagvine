@@ -36,7 +36,7 @@ const handleLogin = async (provider) => {
 const handleLoginGoogle = async (provider) => {
   try {
     loginWithGoogle()
-    //router.push({ name: "Me" });
+    router.push({ name: "Me" });
   } catch (error) {
     alert(error.message);
   }
