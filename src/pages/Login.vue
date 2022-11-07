@@ -9,22 +9,6 @@ const { login, loginWithSocialProvider, loginWithGoogle, findUserLogin } =
   useAuthUser();
 const user = useUserStore();
 
-onMounted(async () => {
-  console.log(user.isLogin);
-  findUserLogin();
-  await console.log(findUserLogin());
-  if (findUserLogin()) {
-    console.log("TRUE");
-  } else {
-    console.log("FALSE");
-  }
-  await router.push({ name: "Me" });
-  await console.log(user.isLogin);
-  setInterval(() => {
-    console.log(user.isLogin);
-  }, 3000);
-});
-
 // keep up with form data
 const form = ref({
   email: "",

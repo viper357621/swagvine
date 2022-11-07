@@ -53,18 +53,42 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const { supabase } = useSupabase();
+  console.log((await supabase.auth.getUser()).data.user);
+  if ((await supabase.auth.getUser()).data.user != null) {
+    console.log("Not Null TEST");
+  }
+  console.log("Routes");
 
-  supabase.auth.getUser().then(({ data, error }) => {
-    if (
-      error != null &&
-      to.meta.requiresAuth &&
-      !Object.keys(to.query).includes("fromEmail")
-    ) {
-      return { name: "Login" };
-    }
-  });
+  if (
+    (to.path === "/login" || to.path === "/register") &&
+    (await supabase.auth.getUser()).data.user != null
+  ) {
+    next("/me");
+  } else if (
+    requiresAuth &&
+    (await supabase.auth.getUser()).data.user == null
+  ) {
+    next("login");
+  } else {
+    next();
+  }
 });
+
+// router.beforeEach(async (to) => {
+//   const { supabase } = useSupabase();
+
+//   supabase.auth.getUser().then(({ data, error }) => {
+//     if (
+//       error != null &&
+//       to.meta.requiresAuth &&
+//       !Object.keys(to.query).includes("fromEmail")
+//     ) {
+//       return { name: "Login" };
+//     }
+//   });
+// });
 
 export default router;
