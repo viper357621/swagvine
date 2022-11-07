@@ -80,6 +80,7 @@ export default function useAuthUser() {
    * Register
    */
   const register = async ({ email, password, ...meta }) => {
+    console.log(meta);
     const { user, error } = await supabase.auth.signUp(
       { email, password },
       {

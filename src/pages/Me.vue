@@ -1,7 +1,15 @@
 <script setup>
-import { useUserStore } from "../store/useUserStore";
+import useAuthUser from "../composables/UseAuthUser";
+import { useRouter } from "vue-router";
 
-const user = useUserStore();
+const user = useAuthUser();
+const router = useRouter();
+
+function logOut() {
+  user.logout();
+  console.log("Logout");
+  router.push({ name: "Login" });
+}
 </script>
 
 <template>
@@ -88,7 +96,9 @@ const user = useUserStore();
             <a href="#" class="dashboard"><span>Invite Friends</span></a>
           </li>
           <li>
-            <a href="#" class="dashboard"><span>Log Out</span></a>
+            <a href="#" class="dashboard" @click="logOut"
+              ><span>Log Out</span></a
+            >
           </li>
         </ul>
       </nav>
