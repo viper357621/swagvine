@@ -13,22 +13,25 @@ export default function useAuthUser() {
    * Login with email and password
    */
   const login = async ({ email, password }) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) throw error;
-    useUserStore().isLogin=true;
+    useUserStore().isLogin = true;
     useUserStore().data = data.user;
     return data.user;
   };
 
-    const loginWithGoogle = async()=>{
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
-      if (error) throw error;
-      useUserStore().isLogin=true;
-      useUserStore().data = data.user;
-      return data.user;
-    }
+  const loginWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+    if (error) throw error;
+    useUserStore().isLogin = true;
+    useUserStore().data = data.user;
+    return data.user;
+  };
   /**
    * Login with refresh token
    * Useful for logging in after email confirmations
@@ -39,17 +42,16 @@ export default function useAuthUser() {
     return user;
   };
 
+  const findUserLogin = async () => {
+    const userLogin = await supabase.auth.getUser();
 
-  const findUserLogin = async ()=>{
-
-    const userLogin =await supabase.auth.getUser();
-    console.log("TEST IS LOGIN USER")
-    console.log(userLogin)
-    if (error) throw error;
-    useUserStore().isLogin=true;
-    useUserStore().data = data.user;
-    return data.user;
-  }
+    if (userLogin.error == null) {
+      console.log("TRUEE TEST");
+      return true;
+    } else {
+      return false;
+    }
+  };
   /**
    * Login with google, github, etc
    */
@@ -131,6 +133,6 @@ export default function useAuthUser() {
     sendPasswordRestEmail,
     maybeHandleEmailConfirmation,
     loginWithGoogle,
-    findUserLogin
+    findUserLogin,
   };
 }
