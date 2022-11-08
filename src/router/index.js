@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import useSupabase from "../composables/UseSupabase";
 import { useUserStore } from "../store/useUserStore";
 
 const routes = [
@@ -41,7 +42,7 @@ const routes = [
     name: "Logout",
     path: "/logout",
     beforeEnter: async () => {
-      const { logout } = useUserStore().isLogin=false;
+      const { logout } = (useUserStore().isLogin = false);
       await logout();
       return { name: "Home" };
     },
@@ -58,14 +59,27 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
-  const isLoggedIn= useUserStore().isLogin;
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const { supabase } = useSupabase();
+
   if (
-    !isLoggedIn &&
-    to.meta.requiresAuth &&
-    !Object.keys(to.query).includes("fromEmail")
+    (to.path === "/login" || to.path === "/register") &&
+    (await supabase.auth.getUser()).data.user != null
   ) {
-    return { name: "Login" };
+    next("/me");
+  } else if (
+    requiresAuth &&
+    (await supabase.auth.getUser()).data.user == null
+  ) {
+    next("login");
+  } else if (
+    to.path === "/" &&
+    (await supabase.auth.getUser()).data.user != null
+  ) {
+    next("me");
+  } else {
+    next();
   }
 });
 
