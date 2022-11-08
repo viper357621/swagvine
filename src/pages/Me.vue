@@ -648,7 +648,11 @@ a:focus {
 }
 
 .navbar {
-  background-color: #4f3961;
+  background: linear-gradient(
+    53deg,
+    rgba(25, 191, 203, 1) 6%,
+    rgba(188, 81, 218, 1) 61%
+  );
   color: #ffffff;
 }
 
