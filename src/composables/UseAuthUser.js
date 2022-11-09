@@ -13,14 +13,13 @@ export default function useAuthUser() {
    * Login with email and password
    */
   const login = async ({ email, password }) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    console.log(email), console.log(password);
+    const data = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) throw error;
-    useUserStore().isLogin = true;
-    useUserStore().data = data.user;
-    return data.user;
+
+    return data;
   };
 
   const loginWithGoogle = async () => {
@@ -80,19 +79,44 @@ export default function useAuthUser() {
    * Register
    */
   const register = async ({ email, password, ...meta }) => {
-    console.log(meta);
-    const { user, error } = await supabase.auth.signUp(
-      { email, password },
-      {
-        //arbitrary meta data is passed as the second argument under a data key
-        // to the Supabase signUp method
-        data: meta,
-        // the to redirect to after the user confirms their email
-        redirectTo: `${window.location.origin}/me?fromEmail=registrationConfirmation"`,
+    console.log(email);
+    console.log(password);
+    const data = await supabase.auth.signUp({ email, password });
+    return data;
+  };
+
+  const updateProfile = async ({
+    website,
+    username,
+    firstName,
+    lastName,
+    avatar_url,
+  }) => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      const updates = {
+        id: user.id,
+        username,
+        website,
+        firstName,
+        lastName,
+        avatar_url,
+        updated_at: new Date(),
+      };
+
+      console.log("Composables");
+      console.log(updates);
+      let { error } = await supabase.from("profiles").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
+      });
+
+      if (error) {
+        throw error;
       }
-    );
-    if (error) throw error;
-    return user;
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   /**
@@ -135,5 +159,6 @@ export default function useAuthUser() {
     maybeHandleEmailConfirmation,
     loginWithGoogle,
     findUserLogin,
+    updateProfile,
   };
 }

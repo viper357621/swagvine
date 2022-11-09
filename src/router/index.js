@@ -26,6 +26,53 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+    redirect: "/me/dashboard",
+    children: [
+      // {
+      //   name: "Create User",
+      //   path: "pages/createuser",
+      //   component: () => import("@/views/dashboard/DashboardCreateUser"),
+      // },
+      // // Components
+      // {
+      //   name: "Alerts",
+      //   path: "pages/alerts",
+      //   component: () => import("@/views/dashboard/DashboardAlerts"),
+      // },
+
+      // {
+      //   name: "Timekeeping",
+      //   path: "pages/timekeeping",
+      //   component: () => import("@/views/dashboard/DashboardTimekeeping"),
+      // },
+
+      // {
+      //   name: "Icons",
+      //   path: "pages/icons",
+      //   component: () => import("@/views/dashboard/DashboardIcons"),
+      // },
+
+      // {
+      //   name: "TableSimple",
+      //   path: "pages/tables-simple",
+      //   component: () => import("@/views/dashboard/DashboardTableSimple"),
+      // },
+      // {
+      //   name: "DashboardTest",
+      //   path: "pages/test",
+      //   component: () => import("@/views/dashboard/DashboardTest"),
+      // },
+      {
+        name: "Profile",
+        path: "profile",
+        component: () => import("../pages/users/UserProfile.vue"),
+      },
+      {
+        name: "Dashboard",
+        path: "dashboard",
+        component: () => import("../pages/users/UserDashboard.vue"),
+      },
+    ],
     component: () => import("../pages/Me.vue"),
   },
   {
@@ -67,7 +114,7 @@ router.beforeEach(async (to, from, next) => {
     (to.path === "/login" || to.path === "/register") &&
     (await supabase.auth.getUser()).data.user != null
   ) {
-    next("/me");
+    next("/me/dashboard");
   } else if (
     requiresAuth &&
     (await supabase.auth.getUser()).data.user == null

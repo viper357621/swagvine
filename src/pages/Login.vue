@@ -10,20 +10,42 @@ const { login, loginWithSocialProvider, loginWithGoogle, findUserLogin } =
 const user = useUserStore();
 
 // keep up with form data
-const form = ref({
-  email: "",
-  password: "",
-});
+const email = ref("");
+const password = ref("");
+
 // call the proper login method from the AuthUser composable
 // on the submit of the forms
 const handleLogin = async (provider) => {
   try {
-    provider
-      ? await loginWithSocialProvider(provider)
-      : await login(form.value);
-    router.push({ name: "Me" });
+    var resData = await login({ email: email.value, password: password.value });
+
+    console.log(resData.error);
+    if (resData.error) {
+      if (resData.error == "AuthApiError: Invalid login credentials") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Invalid login credentials",
+        });
+      } else if (resData.error == "AuthApiError: Email not confirmed") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: " Email not confirmed",
+        });
+      }
+    } else {
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "You are now Login",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      router.push({ name: "Me" });
+    }
   } catch (error) {
-    alert(error.message);
+    console.log(error);
   }
 };
 
@@ -37,55 +59,50 @@ const handleLoginGoogle = async (provider) => {
 };
 </script>
 <template>
-  <body>
-    <div class="fullscreen-container">
-      <div class="login-container">
-        <form class="form" @submit.prevent="handleLogin()">
-          <h1>Login</h1>
-          <div class="input-group">
-            <label for="username">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              id="username"
-              name="username"
-              placeholder="Type your username"
-            />
+  <div class="container" style="background-color: black">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="card login-content shadow-lg border-0">
+          <div class="card-body">
+            <div class="text-center">
+              <img
+                src="https://i.ibb.co/M8w4j87/swagvine-logo.png"
+                width="300"
+              />
+            </div>
+            <h3 class="text-logo">Sign In</h3>
+            <br />
+            <form class="text-center" @submit.prevent="handleLogin()">
+              <input
+                class="form-control border-0"
+                v-model="email"
+                placeholder="Type Your Email"
+                required
+              />
+              <br />
+              <input
+                class="form-control border-0"
+                v-model="password"
+                placeholder="Type Your Password"
+                required
+              />
+              <br />
+              <button class="btn btn-primary btn-sm border-0" type="submit">
+                Login
+              </button>
+              <p class="forgot"><a href="">Forgot Password?</a></p>
+            </form>
           </div>
-          <div class="input-group">
-            <label for="password">Password</label>
-            <input
-              v-model="form.password"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Type your password"
-            />
+          <div class="nomember">
+            <p class="text-center">
+              Not a member?
+              <router-link to="/register">Create an Account</router-link>
+            </p>
           </div>
-          <button class="button">Login</button>
-          <button
-            type="button"
-            class="login-with-google-btn"
-            @click="handleLoginGoogle"
-          >
-            Sign in with Google
-          </button>
-        </form>
-
-        <h3 class="signup-header">Or signup here</h3>
-
-        <div class="social-icons">
-          <ul class="social-list">
-            <router-link
-              to="/register"
-              style="text-decoration: underline; background-color: transparent"
-              >Register</router-link
-            >
-          </ul>
         </div>
       </div>
     </div>
-  </body>
+  </div>
 
   <!-- <div class="max-w-lg m-auto">
     <h1>{{user.isLogin}}</h1>
@@ -102,152 +119,104 @@ const handleLoginGoogle = async (provider) => {
   </div> -->
 </template>
 
-<style>
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  padding: 0;
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+#body {
+  background-color: #0278ae;
+  font-family: "Lato", sans-serif;
 }
 
-body {
-  margin: 0;
-  font-family: "Open Sans", sans-serif;
+.login-content {
+  max-width: 450px;
+  width: 100%;
+  height: 550px;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -286px;
+  border-radius: 8px;
 }
 
-.fullscreen-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100vw;
-  background: linear-gradient(
-    53deg,
-    rgba(25, 191, 203, 1) 6%,
-    rgba(188, 81, 218, 1) 61%
-  );
+.logo {
+  width: 128px;
+  height: 128px;
+  margin: 5px;
 }
 
-.login-container {
-  width: 50%;
-  max-width: 400px;
-  min-width: 300px;
-  padding: 50px 25px 20px;
-  background: white;
-  border-radius: 10px;
-}
-
-.header {
+.text-logo {
   text-align: center;
+  font-weight: bold;
+  font-size: 32px;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 50px;
+.form-control {
+  width: 18rem;
+  height: 3rem;
+  left: 65px;
+  position: relative;
+  border-radius: 5px;
+  background-color: rgba(239, 237, 253, 255);
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  font-size: 0.8rem;
-}
-
-.input-group input {
-  font-size: 0.9rem;
-  padding: 10px;
-  border: none;
-  outline: none;
-  border-bottom: 2px solid hsl(0, 0%, 83%);
-}
-
-.input-group input:focus {
-  box-shadow: 0 0 0 1px hsl(178, 100%, 50%);
-  border-bottom: 2px solid hsl(0, 0%, 83%, 0%);
-}
-
-.button {
-  margin: 20px 0;
-  padding: 10px 0;
-  border-radius: 25px;
-  border: none;
-  outline: none;
-  cursor: pointer;
+.btn {
+  font-size: 22px;
   background: linear-gradient(
     53deg,
     rgba(25, 191, 203, 1) 6%,
     rgba(188, 81, 218, 1) 73%
   );
-  color: white;
-  font-size: 1rem;
+  border: none;
+  width: 18rem;
+  height: 3rem;
+  border-radius: 5px;
 }
 
-.button:focus {
-  box-shadow: 0 0 0 1px hsl(178, 100%, 50%);
+.btn:hover {
+  background-color: blue;
 }
 
-.signup-header {
-  text-align: center;
-  font-weight: 200;
-  font-size: 0.9rem;
-  margin-top: 75px;
+.nomember {
+  background-color: #e4dede;
+  padding: 10px;
+  padding-top: 20px;
+  border-radius: 0px 0px 5px 5px;
 }
 
-.social-icons {
-  margin-top: 20px;
-}
-
-.social-list {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.social-links {
+.nomember a {
   text-decoration: none;
 }
 
-.fa-brands {
-  font-size: 1.75rem;
+.forgot {
+  position: relative;
+  right: -20%;
 }
 
-.fa-facebook {
-  border-radius: 50%;
-  background: white;
-  color: #435892;
-}
-
-.fa-twitter {
-  border-radius: 50%;
-  padding: px;
-  color: #4aa0e8;
-  background-color: white;
-}
-
-.fa-google {
-  color: #d64e44;
-}
-
-.login-with-google-btn {
-  transition: background-color 0.3s, box-shadow 0.3s;
-
-  padding: 12px 16px 12px 42px;
-  border: none;
-  border-radius: 24px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
-
-  color: #757575;
+.forgot a {
+  text-decoration: none;
   font-size: 14px;
-  font-weight: 500;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: rgba(239, 237, 253, 255);
+}
 
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTIuMmwtMy0yLjJhNS40IDUuNCAwIDAgMS04LTIuOUgxVjEzYTkgOSAwIDAgMCA4IDV6IiBmaWxsPSIjMzRBODUzIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNNCAxMC43YTUuNCA1LjQgMCAwIDEgMC0zLjRWNUgxYTkgOSAwIDAgMCAwIDhsMy0yLjN6IiBmaWxsPSIjRkJCQzA1IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJNOSAzLjZjMS4zIDAgMi41LjQgMy40IDEuM0wxNSAyLjNBOSA5IDAgMCAwIDEgNWwzIDIuNGE1LjQgNS40IDAgMCAxIDUtMy43eiIgZmlsbD0iI0VBNDMzNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTAgMGgxOHYxOEgweiIvPjwvZz48L3N2Zz4=);
-  background-color: white;
-  background-repeat: no-repeat;
-  background-position: 12px 11px;
+.copyright {
+  color: white;
+  padding: 15px;
+}
+
+/*support google chrome*/
+/* .form-control::-webkit-input-placeholder {
+  color: #00000036;
+} */
+
+/*support mozilla*/
+.form-control:-moz-input-placeholder {
+  color: red;
+}
+
+/*support internet explorer*/
+.form-control:-ms-input-placeholder {
+  color: red;
 }
 </style>

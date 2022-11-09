@@ -5,10 +5,13 @@ import { useRouter } from "vue-router";
 const user = useAuthUser();
 const router = useRouter();
 
-function logOut() {
+async function logOut() {
   user.logout();
-  console.log("Logout");
   router.push({ name: "Login" });
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+  console.log("SDA");
 }
 </script>
 
@@ -108,15 +111,15 @@ function logOut() {
         <div class="top-navbar">
           <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-              <button
+              <!-- <button
                 type="button"
                 id="sidebarCollapse"
                 class="d-xl-block d-lg-block d-md-mone d-none"
               >
                 <span class="material-icons">arrow_back_ios</span>
-              </button>
+              </button> -->
 
-              <div style="width: 30%"></div>
+              <div style="width: 37%"></div>
               <button
                 class="d-inline-block d-lg-none ml-auto more-button"
                 type="button"
@@ -174,66 +177,8 @@ function logOut() {
             </div>
           </nav>
         </div>
-
         <div class="main-content">
-          <div class="row">
-            <div class="col">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="card card-01">
-                    <img
-                      class="card-img-top"
-                      src="https://i.ibb.co/fN9TKDc/ss1.png"
-                      alt="Card image cap"
-                      width="120"
-                      height="170"
-                    />
-                    <div class="card-body">
-                      <span class="badge-box"><i class="fa fa-check"></i></span>
-                      <h5 class="card-title">CPX Research</h5>
-                      <p class="card-text">Earn up to $10/10,000 points</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="card card-01">
-                    <img
-                      class="card-img-top"
-                      src="https://i.ibb.co/8sD4Fxf/ss2.png"
-                      alt="Card image cap"
-                      width="120"
-                      height="170"
-                    />
-                    <div class="card-body">
-                      <span class="badge-box"><i class="fa fa-check"></i></span>
-
-                      <h5 class="card-title">CINT Wall</h5>
-                      <p class="card-text">Earn up to $10/10,000 points</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="card card-01">
-                    <img
-                      class="card-img-top"
-                      src="https://i.ibb.co/V3yk33d/ss3.png"
-                      alt="Card image cap"
-                      width="120"
-                      height="170"
-                    />
-                    <div class="card-body">
-                      <span class="badge-box"><i class="fa fa-check"></i></span>
-
-                      <h5 class="card-title">PeanutLabs</h5>
-                      <p class="card-text">Earn up to $10/10,000 points</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <router-view />
         </div>
       </div>
     </div>
@@ -651,7 +596,7 @@ a:focus {
   background: linear-gradient(
     53deg,
     rgba(25, 191, 203, 1) 6%,
-    rgba(188, 81, 218, 1) 61%
+    rgba(188, 81, 218, 1) 73%
   );
   color: #ffffff;
 }
