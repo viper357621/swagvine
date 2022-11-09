@@ -80,19 +80,75 @@ export default function useAuthUser() {
    * Register
    */
   const register = async ({ email, password, ...meta }) => {
+    // const { error, user } = await supabase.auth
+    //   .signUp({ email, password })
+    //   .then(({ error, user }) => {
+    //     console.log(user);
+    //     console.log(error);
+    //     console.log(user);
+    //     if (!error) {
+    //       supabase
+    //         .from("profiles")
+    //         .update({
+    //           username,
+    //         })
+    //         .eq("id", user.id);
+    //     }
+    //   });
+
     console.log(meta);
+
     const { user, error } = await supabase.auth.signUp(
       { email, password },
       {
         //arbitrary meta data is passed as the second argument under a data key
         // to the Supabase signUp method
-        data: meta,
+        // data: meta,
         // the to redirect to after the user confirms their email
         redirectTo: `${window.location.origin}/me?fromEmail=registrationConfirmation"`,
       }
     );
-    if (error) throw error;
+
+    updateProfile({
+      username: "george",
+      website: "https://test.com",
+      avatar_url: "https://i.ibb.co/M8w4j87/swagvine-logo.png",
+    });
     return user;
+  };
+
+  const updateProfile = async ({
+    website,
+    username,
+    firstName,
+    lastName,
+    avatar_url,
+  }) => {
+    try {
+      const user = await supabase.auth.getUser();
+
+      const updates = {
+        id: user.id,
+        username,
+        website,
+        firstName,
+        lastName,
+        avatar_url,
+        updated_at: new Date(),
+      };
+
+      console.log("Composables");
+      console.log(updates);
+      let { error } = await supabase.from("profiles").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
+      });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   /**
@@ -135,5 +191,6 @@ export default function useAuthUser() {
     maybeHandleEmailConfirmation,
     loginWithGoogle,
     findUserLogin,
+    updateProfile,
   };
 }
