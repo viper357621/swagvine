@@ -19,6 +19,7 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+    redirect: "/me/dashboard",
     children: [
       // {
       //   name: "Create User",
@@ -106,7 +107,7 @@ router.beforeEach(async (to, from, next) => {
     (to.path === "/login" || to.path === "/register") &&
     (await supabase.auth.getUser()).data.user != null
   ) {
-    next("/me");
+    next("/me/dashboard");
   } else if (
     requiresAuth &&
     (await supabase.auth.getUser()).data.user == null

@@ -8,91 +8,112 @@ const router = useRouter();
 const { register } = useAuthUser();
 
 // Form reactive ref to keep up with the form data
-const form = ref({
-  username: "",
-  email: "",
-  password: "",
-});
+// const form = ref({
+//   username: "",
+//   email: "",
+//   password: "",
+// });
+
+const username = ref("");
+const email = ref("");
+const password = ref("");
 
 // function to hand the form submit
 const handleSubmit = async () => {
+  //console.log(form.value);
   try {
     // use the register method from the AuthUser composable
-    await register(form.value);
-
-    // and redirect to a EmailConfirmation page the will instruct
-    // the user to confirm they're email address
-    router.push({
-      name: "EmailConfirmation",
-      query: { email: form.value.email },
+    var resData = await register({
+      email: email.value,
+      password: password.value,
     });
+
+    if (resData.error) {
+      if (
+        resData.error ==
+        "AuthApiError: Password should be at least 6 characters"
+      ) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Password should be at least 6 characters",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: " Invalid  credentials Input",
+        });
+      }
+    } else {
+      router.push({ name: "EmailConfirmation", query: { email: email.value } });
+    }
   } catch (error) {
-    alert(error.message);
+    console.log(error);
   }
 };
 </script>
 <template>
-  <body>
-    <div class="fullscreen-container">
-      <div class="login-container">
-        <h1 class="header">Register</h1>
-        <form class="form" @submit.prevent="handleSubmit()">
-          <div class="input-group">
-            <label for="username">Username</label>
-            <input
-              v-model="form.username"
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Type your username"
-            />
+  <div class="container" style="background-color: black">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="card login-content shadow-lg border-0">
+          <div class="card-body">
+            <div class="text-center">
+              <img
+                src="https://i.ibb.co/M8w4j87/swagvine-logo.png"
+                width="300"
+              />
+              <h3 class="text-logo">Register</h3>
+            </div>
+            <br />
+            <form class="text-center">
+              <input
+                class="form-control border-0"
+                v-model="username"
+                name="username"
+                placeholder="Type Your Username"
+                required
+              />
+              <br />
+              <input
+                class="form-control border-0"
+                v-model="email"
+                name="email"
+                placeholder="Type Your Email"
+                required
+              />
+              <br />
+              <input
+                class="form-control border-0"
+                v-model="password"
+                name="password"
+                placeholder="Type Your Password"
+                required
+              />
+              <br />
+              <button
+                class="btn btn-primary btn-sm border-0"
+                type="button"
+                @click="handleSubmit()"
+              >
+                Register
+              </button>
+              <p class="forgot"><a href="">Forgot Password?</a></p>
+            </form>
           </div>
-          <div class="input-group">
-            <label for="username">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              id="username"
-              name="username"
-              placeholder="Type your username"
-            />
+          <div class="nomember">
+            <p class="text-center">
+              Do you have an Account?
+              <router-link to="/login">Login Here</router-link>
+            </p>
           </div>
-          <div class="input-group">
-            <label for="password">Password</label>
-            <input
-              v-model="form.password"
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Type your password"
-            />
-          </div>
-          <button class="button">Login</button>
-        </form>
-
-        <h3 class="signup-header">Or Sign In here</h3>
-
-        <div class="social-icons">
-          <ul class="social-list">
-            <router-link
-              to="/login"
-              style="text-decoration: underline; background-color: transparent"
-              >Log In</router-link
-            >
-          </ul>
         </div>
       </div>
     </div>
-  </body>
-  <!-- <form class="max-w-lg m-auto" @submit.prevent="handleSubmit">
-    <h1 class="text-3xl mb-5">Register</h1>
-    <label>Name <input v-model="form.name" type="text" /></label>
-    <label>Email <input v-model="form.email" type="email" /></label>
-    <label>Password <input v-model="form.password" type="password" /></label>
-    <button>Register</button>
-  </form> -->
+  </div>
 </template>
-
+<!-- 
 <style>
 *,
 *::before,
@@ -220,5 +241,107 @@ body {
 
 .fa-google {
   color: #d64e44;
+}
+</style> -->
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
+#body {
+  background-color: #0278ae;
+  font-family: "Lato", sans-serif;
+}
+
+.login-content {
+  max-width: 450px;
+  width: 100%;
+  height: 550px;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -200px;
+  margin-top: -286px;
+  border-radius: 8px;
+}
+
+.logo {
+  width: 128px;
+  height: 128px;
+  margin: 5px;
+}
+
+.text-logo {
+  text-align: center;
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.form-control {
+  width: 18rem;
+  height: 3rem;
+  left: 65px;
+  position: relative;
+  border-radius: 5px;
+  background-color: rgba(239, 237, 253, 255);
+}
+
+.btn {
+  font-size: 22px;
+  background: linear-gradient(
+    53deg,
+    rgba(25, 191, 203, 1) 6%,
+    rgba(188, 81, 218, 1) 73%
+  );
+  border: none;
+  width: 18rem;
+  height: 3rem;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: blue;
+}
+
+.nomember {
+  background-color: #e4dede;
+  padding: 10px;
+  padding-top: 20px;
+  border-radius: 0px 0px 5px 5px;
+}
+
+.nomember a {
+  text-decoration: none;
+}
+
+.forgot {
+  position: relative;
+  right: -20%;
+}
+
+.forgot a {
+  text-decoration: none;
+  font-size: 14px;
+  color: rgba(239, 237, 253, 255);
+}
+
+.copyright {
+  color: white;
+  padding: 15px;
+}
+
+/*support google chrome*/
+/* .form-control::-webkit-input-placeholder {
+  color: #00000036;
+} */
+
+/*support mozilla*/
+.form-control:-moz-input-placeholder {
+  color: red;
+}
+
+/*support internet explorer*/
+.form-control:-ms-input-placeholder {
+  color: red;
 }
 </style>

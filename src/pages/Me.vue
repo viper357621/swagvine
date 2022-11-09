@@ -5,10 +5,13 @@ import { useRouter } from "vue-router";
 const user = useAuthUser();
 const router = useRouter();
 
-function logOut() {
+async function logOut() {
   user.logout();
-  console.log("Logout");
   router.push({ name: "Login" });
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+  console.log("SDA");
 }
 </script>
 

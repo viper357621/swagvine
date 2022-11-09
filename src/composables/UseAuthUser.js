@@ -13,14 +13,13 @@ export default function useAuthUser() {
    * Login with email and password
    */
   const login = async ({ email, password }) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    console.log(email), console.log(password);
+    const data = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (error) throw error;
-    useUserStore().isLogin = true;
-    useUserStore().data = data.user;
-    return data.user;
+
+    return data;
   };
 
   const loginWithGoogle = async () => {
@@ -80,41 +79,10 @@ export default function useAuthUser() {
    * Register
    */
   const register = async ({ email, password, ...meta }) => {
-    // const { error, user } = await supabase.auth
-    //   .signUp({ email, password })
-    //   .then(({ error, user }) => {
-    //     console.log(user);
-    //     console.log(error);
-    //     console.log(user);
-    //     if (!error) {
-    //       supabase
-    //         .from("profiles")
-    //         .update({
-    //           username,
-    //         })
-    //         .eq("id", user.id);
-    //     }
-    //   });
-
-    console.log(meta);
-
-    const { user, error } = await supabase.auth.signUp(
-      { email, password },
-      {
-        //arbitrary meta data is passed as the second argument under a data key
-        // to the Supabase signUp method
-        // data: meta,
-        // the to redirect to after the user confirms their email
-        redirectTo: `${window.location.origin}/me?fromEmail=registrationConfirmation"`,
-      }
-    );
-
-    updateProfile({
-      username: "george",
-      website: "https://test.com",
-      avatar_url: "https://i.ibb.co/M8w4j87/swagvine-logo.png",
-    });
-    return user;
+    console.log(email);
+    console.log(password);
+    const data = await supabase.auth.signUp({ email, password });
+    return data;
   };
 
   const updateProfile = async ({
