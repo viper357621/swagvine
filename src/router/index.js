@@ -3,6 +3,13 @@ import useSupabase from "../composables/UseSupabase";
 import { useUserStore } from "../store/useUserStore";
 
 const routes = [
+// --start sample--
+  {
+    name: "SamplHome",
+    path: "/sample_home",
+    component: () => import("../pages/SampleHome.vue"),
+  },
+  // --end--
   {
     name: "EmailConfirmation",
     path: "/email-confirmation",

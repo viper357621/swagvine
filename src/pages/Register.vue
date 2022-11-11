@@ -97,6 +97,7 @@ const handleLoginGoogle = async (provider) => {
                 class="form-control border-0"
                 v-model="password"
                 name="password"
+                type="password"
                 placeholder="Type Your Password"
                 required
               />

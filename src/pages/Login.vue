@@ -78,6 +78,7 @@ const handleLoginGoogle = async (provider) => {
                 v-model="email"
                 placeholder="Type Your Email"
                 required
+                type="email"
               />
               <br />
               <input
@@ -85,6 +86,7 @@ const handleLoginGoogle = async (provider) => {
                 v-model="password"
                 placeholder="Type Your Password"
                 required
+                type="password"
               />
               <br />
               <button class="btn btn-primary btn-sm border-0" type="submit">
