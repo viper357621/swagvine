@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import router from "./router";
 import App from "./App.vue";
-import VueSweetalert2 from "vue-sweetalert2";
 
 const pinia = createPinia();
 const app = createApp(App);
