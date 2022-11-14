@@ -119,7 +119,7 @@ async function logOut() {
                 <span class="material-icons">arrow_back_ios</span>
               </button> -->
 
-              <div style="width: 37%"></div>
+              <div style="width: 70%"></div>
               <button
                 class="d-inline-block d-lg-none ml-auto more-button"
                 type="button"

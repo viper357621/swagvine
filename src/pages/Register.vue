@@ -112,7 +112,7 @@ const handleLoginGoogle = async (provider) => {
               <br />
               or
               <br />
-              <div class="g-sign-in-button" @click="handleLoginGoogle">
+              <div class="g-sign-in-button" @click="handleLoginGoogle" style="background-color:white; color:black">
                 <div class="content-wrapper">
                   <div class="logo-wrapper">
                     <img
