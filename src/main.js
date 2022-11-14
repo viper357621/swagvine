@@ -10,5 +10,4 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
-app.use(VueSweetalert2);
 app.mount("#appId");
